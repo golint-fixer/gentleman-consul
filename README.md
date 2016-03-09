@@ -6,7 +6,8 @@
 
 [gentleman](https://github.com/h2non/gentleman)'s plugin for easy service discovery and dynamic balancing using [Consul](https://www.consul.io).
 
-Provides transparent retry/backoff support for resilient and [reactive](http://www.reactivemanifesto.org) HTTP client capabilities. Also it allows you to use a custom [retry strategy](https://github.com/h2non/gentleman-retry/blob/ce34094db8b9811b45e0395b64f9b1188cabb3ca/retry.go#L35-L38), such an [constant](https://godoc.org/github.com/eapache/go-resiliency/retrier#ConstantBackoff) or [exponential](https://godoc.org/github.com/eapache/go-resiliency/retrier#ExponentialBackoff) back off.
+Provides transparent retry/backoff support for resilient and [reactive](http://www.reactivemanifesto.org) HTTP client capabilities. 
+It also provides support to use custom [retry strategies](https://github.com/h2non/gentleman-retry/blob/ce34094db8b9811b45e0395b64f9b1188cabb3ca/retry.go#L35-L38), such an [constant](https://godoc.org/github.com/eapache/go-resiliency/retrier#ConstantBackoff) or [exponential](https://godoc.org/github.com/eapache/go-resiliency/retrier#ExponentialBackoff) retries.
 
 ## Installation
 
