@@ -93,7 +93,7 @@ func (c *Consul) SetServerURL(ctx *context.Context, node *api.CatalogService) {
 	ctx.Request.URL.Scheme = c.Config.Scheme
 	ctx.Request.URL.Host = node.Address
 
-	// Define URL port, if neccessary
+	// Define URL port, if necessary
 	if node.ServicePort != 0 {
 		ctx.Request.URL.Host += ":" + strconv.Itoa(node.ServicePort)
 	}
