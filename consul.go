@@ -2,7 +2,6 @@ package consul
 
 import (
 	"errors"
-	"fmt"
 	"github.com/hashicorp/consul/api"
 	"gopkg.in/h2non/gentleman-retry.v0"
 	"gopkg.in/h2non/gentleman.v0/context"
@@ -54,7 +53,6 @@ func (c *Consul) IsUpdated() bool {
 
 // UpdateCache updates the list of catalog services.
 func (c *Consul) UpdateCache(nodes []*api.CatalogService) {
-	fmt.Printf("Update cache: %#v", c.Config)
 	if !c.Config.Cache || len(nodes) == 0 {
 		return
 	}
@@ -73,7 +71,7 @@ func (c *Consul) GetNodes() ([]*api.CatalogService, error) {
 	}
 
 	nodes, _, err := c.Client.Catalog().Service(c.Config.Service, c.Config.Tag, c.Config.Query)
-	if err != nil {
+	if err == nil {
 		c.UpdateCache(nodes)
 	}
 
@@ -104,19 +102,19 @@ func (c *Consul) GetBestCandidateNode(ctx *context.Context) (*api.CatalogService
 	}
 
 	index := 0
-	if c.Config.Cache {
-		index = ctx.Get("$consul.retries").(int)
+	if retries, ok := ctx.Get("$consul.retries").(int); ok {
+		index = retries
 	}
 
-	if node := nodes[index]; node != nil {
-		return node, nil
+	if index < len(nodes) {
+		return nodes[index], nil
 	}
 
 	return nodes[0], nil
 }
 
-// SetBestCandidateNode sets the best service node URL in the given gentleman context.
-func (c *Consul) SetBestCandidateNode(ctx *context.Context) error {
+// UseBestCandidateNode sets the best service node URL in the given gentleman context.
+func (c *Consul) UseBestCandidateNode(ctx *context.Context) error {
 	node, err := c.GetBestCandidateNode(ctx)
 	if err != nil {
 		return err
@@ -135,19 +133,23 @@ func (c *Consul) OnBeforeDial(ctx *context.Context, h context.Handler) {
 	ctx.Set("$consul.retries", 0)
 
 	// Get best node candidate
-	err := c.SetBestCandidateNode(ctx)
+	err := c.UseBestCandidateNode(ctx)
 	if err != nil {
 		h.Error(ctx, err)
 		return
 	}
 
+	// Always continue with the next middleware
+	defer h.Next(ctx)
+
 	// Wrap HTTP transport with Consul retrier, if enabled
-	if c.Config.Retry && c.Config.Retrier != nil {
-		retrier := NewRetrier(c, ctx)
-		retrier.Retry = c.Config.Retrier
-		retry.InterceptTransport(ctx, retrier)
+	if !c.Config.Retry {
+		return
 	}
 
-	// Continue with the next middleware
-	h.Next(ctx)
+	retrier := NewRetrier(c, ctx)
+	if c.Config.Retrier != nil {
+		retrier.Retry = c.Config.Retrier
+	}
+	retry.InterceptTransport(ctx, retrier)
 }

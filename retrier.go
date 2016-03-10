@@ -36,16 +36,16 @@ func (r *Retrier) Run(fn func() error) error {
 			retries = val
 		}
 
+		// Expose number of retries
+		defer r.Context.Set("$consul.retries", retries+1)
+
 		// Call the function directly for the first attempt
 		if retries == 0 {
 			return fn()
 		}
 
-		// Expose number of retries
-		r.Context.Set("$consul.retries", retries+1)
-
 		// Set best server candidate
-		err := r.Consul.SetBestCandidateNode(r.Context)
+		err := r.Consul.UseBestCandidateNode(r.Context)
 		if err != nil {
 			return err
 		}

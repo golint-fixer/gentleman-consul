@@ -63,6 +63,7 @@ func TestConsulRetry(t *testing.T) {
 
 	gock.New("http://demo.consul.io").
 		Get("/v1/catalog/service/web").
+		Times(4).
 		Reply(200).
 		Type("json").
 		BodyString(consulValidResponse)
@@ -98,13 +99,14 @@ func TestConsulRetryCustomStrategy(t *testing.T) {
 
 	gock.New("http://demo.consul.io").
 		Get("/v1/catalog/service/web").
+		Times(10).
 		Reply(200).
 		Type("json").
 		BodyString(consulValidResponse)
 
 	gock.New("http://127.0.0.1:80").
 		Get("/").
-		Times(10).
+		Times(9).
 		Reply(503)
 
 	gock.New("http://127.0.0.1:80").
@@ -133,6 +135,7 @@ func TestConsulDisableCache(t *testing.T) {
 
 	gock.New("http://demo.consul.io").
 		Get("/v1/catalog/service/web").
+		Times(4).
 		Reply(200).
 		Type("json").
 		BodyString(consulValidResponse)
