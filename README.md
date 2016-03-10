@@ -58,7 +58,7 @@ func main() {
     return
   }
 
-  // Reads the whole body and returns it as string
+  // Print response info
   fmt.Printf("Server URL: %s\n", res.RawRequest.URL.String())
   fmt.Printf("Response status: %d\n", res.StatusCode)
   fmt.Printf("Server header: %s\n", res.Header.Get("Server"))
@@ -108,7 +108,7 @@ func main() {
     return
   }
 
-  // Reads the whole body and returns it as string
+  // Print response info
   fmt.Printf("Server URL: %s\n", res.RawRequest.URL.String())
   fmt.Printf("Response status: %d\n", res.StatusCode)
   fmt.Printf("Server header: %s\n", res.Header.Get("Server"))
