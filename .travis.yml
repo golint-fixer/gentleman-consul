@@ -12,6 +12,7 @@ before_install:
   - go get -u gopkg.in/h2non/gentleman.v0
   - go get -u gopkg.in/h2non/gock.v0
   - go get -u gopkg.in/h2non/gentleman-mock.v0
+  - go get -u gopkg.in/eapache/go-resiliency.v1/retrier
   - go get -u gopkg.in/h2non/gentleman-retry.v0
   - go get -u github.com/hashicorp/consul/api
   - go get -u -v github.com/axw/gocov/gocov
