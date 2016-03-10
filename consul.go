@@ -14,11 +14,20 @@ import (
 // Consul represents the Consul plugin adapter for gentleman,
 // which encapsulates the official Consul client and plugin specific settings.
 type Consul struct {
+	// updated stores the last Consul update date.
 	updated time.Time
-	mutex   *sync.Mutex
-	cache   []*api.CatalogService
-	Client  *api.Client
-	Config  *Config
+
+	// mutex is used internallt to avoid race coditions for multithread scenarios.
+	mutex *sync.Mutex
+
+	// cache is used to store the catalog of service's nodes.
+	cache []*api.CatalogService
+
+	// Config stores the Consul's plugin specific settings.
+	Config *Config
+
+	// Client stores the official Consul client.
+	Client *api.Client
 }
 
 // New creates a new Consul client with the given config
@@ -46,9 +55,9 @@ func (c *Consul) Plugin() plugin.Plugin {
 }
 
 // IsUpdated returns true if the current list of catalog services is up-to-date,
-// based on the refresh TTL.
+// based on the cache TTL.
 func (c *Consul) IsUpdated() bool {
-	return len(c.cache) > 0 && time.Duration((time.Now().Unix()-c.updated.Unix())) < (c.Config.RefreshTTL*time.Second)
+	return len(c.cache) > 0 && time.Duration((time.Now().Unix()-c.updated.Unix())) < (c.Config.CacheTTL*time.Second)
 }
 
 // UpdateCache updates the list of catalog services.
@@ -132,7 +141,7 @@ func (c *Consul) OnBeforeDial(ctx *context.Context, h context.Handler) {
 	// Define the server retries
 	ctx.Set("$consul.retries", 0)
 
-	// Get best node candidate
+	// Use best service node candidate
 	err := c.UseBestCandidateNode(ctx)
 	if err != nil {
 		h.Error(ctx, err)
@@ -142,11 +151,12 @@ func (c *Consul) OnBeforeDial(ctx *context.Context, h context.Handler) {
 	// Always continue with the next middleware
 	defer h.Next(ctx)
 
-	// Wrap HTTP transport with Consul retrier, if enabled
+	// If retry is disable, just continue
 	if !c.Config.Retry {
 		return
 	}
 
+	// Wrap HTTP transport with Consul retrier, if enabled
 	retrier := NewRetrier(c, ctx)
 	if c.Config.Retrier != nil {
 		retrier.Retry = c.Config.Retrier
