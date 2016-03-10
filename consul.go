@@ -11,20 +11,6 @@ import (
 	"time"
 )
 
-// Scheme represents the URI scheme used by default.
-var Scheme = "http"
-
-// DefaultConfig provides a custom
-var DefaultConfig = api.DefaultConfig
-
-// DefaultRetrier stores the default retry strategy used by the plugin.
-// By default will use a constant retry strategy with a maximum of 3 retry attempts.
-var DefaultRetrier = retry.ConstantBackoff
-
-// RefreshTTL stores the default Consul catalog refresh cycle TTL.
-// Default to 2 minutes.
-var RefreshTTL = time.Duration(2) * time.Minute
-
 // Consul represents the Consul plugin adapter for gentleman,
 // which encapsulates the official Consul client and plugin specific settings.
 type Consul struct {
@@ -35,15 +21,20 @@ type Consul struct {
 	Config  *Config
 }
 
-// New creates a new Consul plugin with the given config.
+// New creates a new Consul client with the given config
+// and returns the gentleman plugin.
 func New(config *Config) plugin.Plugin {
+	return NewClient(config).Plugin()
+}
+
+// NewClient creates a new Consul high-level client.
+func NewClient(config *Config) *Consul {
 	client, _ := api.NewClient(config.Client)
-	consul := &Consul{
+	return &Consul{
 		Config: config,
 		Client: client,
 		mutex:  &sync.Mutex{},
 	}
-	return consul.Plugin()
 }
 
 // Plugin returns the gentleman plugin to be plugged.
@@ -150,7 +141,8 @@ func (c *Consul) OnBeforeDial(ctx *context.Context, h context.Handler) {
 
 	// Wrap HTTP transport with Consul retrier, if enabled
 	if c.Config.Retry && c.Config.Retrier != nil {
-		retrier := &Retrier{Consul: c, Retry: c.Config.Retrier, Context: ctx}
+		retrier := NewRetrier(c, ctx)
+		retrier.Retry = c.Config.Retrier
 		retry.InterceptTransport(ctx, retrier)
 	}
 

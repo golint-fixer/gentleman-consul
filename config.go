@@ -6,6 +6,16 @@ import (
 	"time"
 )
 
+// Scheme represents the URI scheme used by default.
+var Scheme = "http"
+
+// DefaultConfig provides a custom
+var DefaultConfig = api.DefaultConfig
+
+// RefreshTTL stores the default Consul catalog refresh cycle TTL.
+// Default to 2 minutes.
+var RefreshTTL = time.Duration(2) * time.Minute
+
 // Config represents the plugin supported settings.
 type Config struct {
 	Retry      bool
