@@ -187,3 +187,80 @@ func TestConsulRetryDisabled(t *testing.T) {
 	st.Expect(t, res.String(), "")
 	st.Expect(t, gock.IsPending(), false)
 }
+
+const consulMultipleServers = `
+[
+  {
+    "Node":"consul-client-nyc3-1",
+    "Address":"127.0.0.1",
+    "ServiceID":"web",
+    "ServiceName":"web",
+    "ServiceTags":[],
+    "ServiceAddress":"",
+    "ServicePort":80,
+    "ServiceEnableTagOverride":false,
+    "CreateIndex":17,
+    "ModifyIndex":17
+  },
+  {
+    "Node":"consul-client-nyc3-2",
+    "Address":"127.0.0.2",
+    "ServiceID":"web",
+    "ServiceName":"web",
+    "ServiceTags":[],
+    "ServiceAddress":"",
+    "ServicePort":80,
+    "ServiceEnableTagOverride":false,
+    "CreateIndex":18,
+    "ModifyIndex":18
+  },
+  {
+    "Node":"consul-client-nyc3-2",
+    "Address":"127.0.0.3",
+    "ServiceID":"web",
+    "ServiceName":"web",
+    "ServiceTags":[],
+    "ServiceAddress":"",
+    "ServicePort":80,
+    "ServiceEnableTagOverride":false,
+    "CreateIndex":18,
+    "ModifyIndex":18
+  }
+]`
+
+func TestConsulNextServerFallback(t *testing.T) {
+	defer gock.Off()
+
+	config := NewConfig("demo.consul.io", "web")
+	consul := New(config)
+	gock.InterceptClient(config.Client.HttpClient)
+
+	gock.New("http://demo.consul.io").
+		Get("/v1/catalog/service/web").
+		Reply(200).
+		Type("json").
+		BodyString(consulMultipleServers)
+
+	gock.New("http://127.0.0.1:80").
+		Get("/").
+		Reply(503)
+
+	gock.New("http://127.0.0.2:80").
+		Get("/").
+		Reply(503)
+
+	gock.New("http://127.0.0.3:80").
+		Get("/").
+		Reply(200).
+		BodyString("hello world")
+
+	cli := gentleman.New()
+	cli.Use(mock.Plugin)
+	cli.Use(consul)
+
+	res, err := cli.Request().Send()
+	st.Expect(t, err, nil)
+	st.Expect(t, res.StatusCode, 200)
+	st.Expect(t, res.String(), "hello world")
+	st.Expect(t, gock.IsPending(), false)
+}
