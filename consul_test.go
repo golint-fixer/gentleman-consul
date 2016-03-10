@@ -122,3 +122,38 @@ func TestConsulRetryCustomStrategy(t *testing.T) {
 	st.Expect(t, res.String(), "hello world")
 	st.Expect(t, gock.IsPending(), false)
 }
+
+func TestConsulDisableCache(t *testing.T) {
+	defer gock.Off()
+
+	config := NewConfig("demo.consul.io", "web")
+	config.Cache = false
+	consul := New(config)
+	gock.InterceptClient(config.Client.HttpClient)
+
+	gock.New("http://demo.consul.io").
+		Get("/v1/catalog/service/web").
+		Reply(200).
+		Type("json").
+		BodyString(consulValidResponse)
+
+	gock.New("http://127.0.0.1:80").
+		Get("/").
+		Times(3).
+		Reply(503)
+
+	gock.New("http://127.0.0.1:80").
+		Get("/").
+		Reply(200).
+		BodyString("hello world")
+
+	cli := gentleman.New()
+	cli.Use(mock.Plugin)
+	cli.Use(consul)
+
+	res, err := cli.Request().Send()
+	st.Expect(t, err, nil)
+	st.Expect(t, res.StatusCode, 200)
+	st.Expect(t, res.String(), "hello world")
+	st.Expect(t, gock.IsPending(), false)
+}

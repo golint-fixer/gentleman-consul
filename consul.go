@@ -2,6 +2,7 @@ package consul
 
 import (
 	"errors"
+	"fmt"
 	"github.com/hashicorp/consul/api"
 	"gopkg.in/h2non/gentleman-retry.v0"
 	"gopkg.in/h2non/gentleman.v0/context"
@@ -53,7 +54,8 @@ func (c *Consul) IsUpdated() bool {
 
 // UpdateCache updates the list of catalog services.
 func (c *Consul) UpdateCache(nodes []*api.CatalogService) {
-	if !c.Config.Cache || len(nodes) != 0 {
+	fmt.Printf("Update cache: %#v", c.Config)
+	if !c.Config.Cache || len(nodes) == 0 {
 		return
 	}
 
