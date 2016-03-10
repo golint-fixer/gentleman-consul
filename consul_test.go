@@ -63,7 +63,6 @@ func TestConsulRetry(t *testing.T) {
 
 	gock.New("http://demo.consul.io").
 		Get("/v1/catalog/service/web").
-		Times(4).
 		Reply(200).
 		Type("json").
 		BodyString(consulValidResponse)
@@ -99,7 +98,6 @@ func TestConsulRetryCustomStrategy(t *testing.T) {
 
 	gock.New("http://demo.consul.io").
 		Get("/v1/catalog/service/web").
-		Times(10).
 		Reply(200).
 		Type("json").
 		BodyString(consulValidResponse)
@@ -158,5 +156,34 @@ func TestConsulDisableCache(t *testing.T) {
 	st.Expect(t, err, nil)
 	st.Expect(t, res.StatusCode, 200)
 	st.Expect(t, res.String(), "hello world")
+	st.Expect(t, gock.IsPending(), false)
+}
+
+func TestConsulRetryDisabled(t *testing.T) {
+	defer gock.Off()
+
+	config := NewConfig("demo.consul.io", "web")
+	config.Retry = false
+	consul := New(config)
+	gock.InterceptClient(config.Client.HttpClient)
+
+	gock.New("http://demo.consul.io").
+		Get("/v1/catalog/service/web").
+		Reply(200).
+		Type("json").
+		BodyString(consulValidResponse)
+
+	gock.New("http://127.0.0.1:80").
+		Get("/").
+		Reply(503)
+
+	cli := gentleman.New()
+	cli.Use(mock.Plugin)
+	cli.Use(consul)
+
+	res, err := cli.Request().Send()
+	st.Expect(t, err, nil)
+	st.Expect(t, res.StatusCode, 503)
+	st.Expect(t, res.String(), "")
 	st.Expect(t, gock.IsPending(), false)
 }

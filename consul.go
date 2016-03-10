@@ -57,7 +57,7 @@ func (c *Consul) Plugin() plugin.Plugin {
 // IsUpdated returns true if the current list of catalog services is up-to-date,
 // based on the cache TTL.
 func (c *Consul) IsUpdated() bool {
-	return len(c.cache) > 0 && time.Duration((time.Now().Unix()-c.updated.Unix())) < (c.Config.CacheTTL*time.Second)
+	return len(c.cache) > 0 && time.Duration((time.Now().UnixNano()-c.updated.UnixNano())) < c.Config.CacheTTL
 }
 
 // UpdateCache updates the list of catalog services.

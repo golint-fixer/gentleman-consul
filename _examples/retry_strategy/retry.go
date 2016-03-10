@@ -32,7 +32,6 @@ func main() {
 	// Mock consul server
 	gock.New("http://demo.consul.io").
 		Get("/v1/catalog/service/web").
-		Times(3).
 		Reply(200).
 		Type("json").
 		BodyString(consulValidResponse)

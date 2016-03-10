@@ -1,13 +1,9 @@
-# [gentleman](https://github.com/h2non/gentleman)-consul [![Build Status](https://travis-ci.org/h2non/gentleman.png)](https://travis-ci.org/h2non/gentleman-consul) [![GitHub release](https://img.shields.io/badge/version-0.1.0-orange.svg?style=flat)](https://github.com/h2non/gentleman-consul/releases) [![GoDoc](https://godoc.org/github.com/h2non/gentleman-consul?status.svg)](https://godoc.org/github.com/h2non/gentleman-consul) [![Go Report Card](https://goreportcard.com/badge/github.com/h2non/gentleman-consul)](https://goreportcard.com/report/github.com/h2non/gentleman-consul)
-
-<!--
-[![Coverage Status](https://coveralls.io/repos/github/h2non/gentleman-consul/badge.svg?branch=master)](https://coveralls.io/github/h2non/gentleman-consul?branch=master)
--->
+# [gentleman](https://github.com/h2non/gentleman)-consul [![Build Status](https://travis-ci.org/h2non/gentleman.png)](https://travis-ci.org/h2non/gentleman-consul) [![GitHub release](https://img.shields.io/badge/version-0.1.0-orange.svg?style=flat)](https://github.com/h2non/gentleman-consul/releases) [![GoDoc](https://godoc.org/github.com/h2non/gentleman-consul?status.svg)](https://godoc.org/github.com/h2non/gentleman-consul) [![Coverage Status](https://coveralls.io/repos/github/h2non/gentleman-consul/badge.svg?branch=master)](https://coveralls.io/github/h2non/gentleman-consul?branch=master) [![Go Report Card](https://goreportcard.com/badge/github.com/h2non/gentleman-consul)](https://goreportcard.com/report/github.com/h2non/gentleman-consul)
 
 [gentleman](https://github.com/h2non/gentleman)'s plugin for easy service discovery using [Consul](https://www.consul.io).
 
 Provides transparent retry/backoff support for resilient and [reactive](http://www.reactivemanifesto.org) HTTP client capabilities.  
-It also allows you to use custom [retry strategies](https://github.com/h2non/gentleman-retry/blob/ce34094db8b9811b45e0395b64f9b1188cabb3ca/retry.go#L35-L38), such as [constant](https://godoc.org/github.com/eapache/go-resiliency/retrier#ConstantBackoff) or [exponential](https://godoc.org/github.com/eapache/go-resiliency/retrier#ExponentialBackoff) retries.
+It also allows you to use custom [retry strategies](#custom-retry-strategy), such as [constant](https://godoc.org/github.com/eapache/go-resiliency/retrier#ConstantBackoff) or [exponential](https://godoc.org/github.com/eapache/go-resiliency/retrier#ExponentialBackoff) retries.
 
 ## Installation
 
