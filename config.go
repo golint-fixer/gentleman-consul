@@ -51,9 +51,9 @@ type Config struct {
 
 // NewConfig creates a new plugin with default settings and
 // custom Consul server URL and service name.
-func NewConfig(addr, service string) *Config {
+func NewConfig(server, service string) *Config {
 	config := api.DefaultConfig()
-	config.Address = addr
+	config.Address = server
 	return &Config{
 		Retry:    true,
 		Cache:    true,
@@ -63,4 +63,9 @@ func NewConfig(addr, service string) *Config {
 		CacheTTL: CacheTTL,
 		Retrier:  DefaultRetrier,
 	}
+}
+
+// NewBasicConfig creates a new basic default config with the given Consul server hostname.
+func NewBasicConfig(server string) *Config {
+	return NewConfig(server, "")
 }
