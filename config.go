@@ -14,7 +14,7 @@ var DefaultConfig = api.DefaultConfig
 
 // CacheTTL stores the default Consul catalog refresh cycle TTL.
 // Default to 2 minutes.
-var CacheTTL = time.Duration(2) * time.Minute
+var CacheTTL = time.Duration(10) * time.Minute
 
 // Config represents the plugin supported settings.
 type Config struct {
