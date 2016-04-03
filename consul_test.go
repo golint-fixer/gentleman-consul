@@ -13,16 +13,25 @@ import (
 const consulValidResponse = `
 [
   {
-    "Node":"consul-client-nyc3-1",
-    "Address":"127.0.0.1",
-    "ServiceID":"web",
-    "ServiceName":"web",
-    "ServiceTags":[],
-    "ServiceAddress":"",
-    "ServicePort":80,
-    "ServiceEnableTagOverride":false,
-    "CreateIndex":17,
-    "ModifyIndex":17
+    "Node":{
+      "Node":"consul-client-nyc3-1",
+      "Address":"127.0.0.1",
+      "TaggedAddresses":{
+        "wan":"127.0.0.1"
+      },
+      "CreateIndex":7,
+      "ModifyIndex":375588
+    },
+    "Service":{
+      "ID":"web",
+      "Service":"web",
+      "Tags":null,
+      "Address":"",
+      "Port":80,
+      "EnableTagOverride":false,
+      "CreateIndex":13,
+      "ModifyIndex":13
+    }
   }
 ]`
 
@@ -34,7 +43,7 @@ func TestConsulClient(t *testing.T) {
 	gock.InterceptClient(config.Client.HttpClient)
 
 	gock.New("http://demo.consul.io").
-		Get("/v1/catalog/service/web").
+		Get("/v1/health/service/web").
 		Reply(200).
 		Type("json").
 		BodyString(consulValidResponse)
@@ -62,7 +71,7 @@ func TestConsulRetry(t *testing.T) {
 	gock.InterceptClient(config.Client.HttpClient)
 
 	gock.New("http://demo.consul.io").
-		Get("/v1/catalog/service/web").
+		Get("/v1/health/service/web").
 		Reply(200).
 		Type("json").
 		BodyString(consulValidResponse)
@@ -97,7 +106,7 @@ func TestConsulRetryCustomStrategy(t *testing.T) {
 	gock.InterceptClient(config.Client.HttpClient)
 
 	gock.New("http://demo.consul.io").
-		Get("/v1/catalog/service/web").
+		Get("/v1/health/service/web").
 		Reply(200).
 		Type("json").
 		BodyString(consulValidResponse)
@@ -132,7 +141,7 @@ func TestConsulDisableCache(t *testing.T) {
 	gock.InterceptClient(config.Client.HttpClient)
 
 	gock.New("http://demo.consul.io").
-		Get("/v1/catalog/service/web").
+		Get("/v1/health/service/web").
 		Times(4).
 		Reply(200).
 		Type("json").
@@ -168,7 +177,7 @@ func TestConsulRetryDisabled(t *testing.T) {
 	gock.InterceptClient(config.Client.HttpClient)
 
 	gock.New("http://demo.consul.io").
-		Get("/v1/catalog/service/web").
+		Get("/v1/health/service/web").
 		Reply(200).
 		Type("json").
 		BodyString(consulValidResponse)
@@ -191,40 +200,67 @@ func TestConsulRetryDisabled(t *testing.T) {
 const consulMultipleServers = `
 [
   {
-    "Node":"consul-client-nyc3-1",
-    "Address":"127.0.0.1",
-    "ServiceID":"web",
-    "ServiceName":"web",
-    "ServiceTags":[],
-    "ServiceAddress":"",
-    "ServicePort":80,
-    "ServiceEnableTagOverride":false,
-    "CreateIndex":17,
-    "ModifyIndex":17
+    "Node":{
+      "Node":"consul-client-nyc3-1",
+      "Address":"127.0.0.1",
+      "TaggedAddresses":{
+        "wan":"127.0.0.1"
+      },
+      "CreateIndex":7,
+      "ModifyIndex":375588
+    },
+    "Service":{
+      "ID":"web",
+      "Service":"web",
+      "Tags":null,
+      "Address":"",
+      "Port":80,
+      "EnableTagOverride":false,
+      "CreateIndex":13,
+      "ModifyIndex":13
+    }
   },
   {
-    "Node":"consul-client-nyc3-2",
-    "Address":"127.0.0.2",
-    "ServiceID":"web",
-    "ServiceName":"web",
-    "ServiceTags":[],
-    "ServiceAddress":"",
-    "ServicePort":80,
-    "ServiceEnableTagOverride":false,
-    "CreateIndex":18,
-    "ModifyIndex":18
+    "Node":{
+      "Node":"consul-client-nyc3-1",
+      "Address":"127.0.0.2",
+      "TaggedAddresses":{
+        "wan":"127.0.0.2"
+      },
+      "CreateIndex":7,
+      "ModifyIndex":375588
+    },
+    "Service":{
+      "ID":"web",
+      "Service":"web",
+      "Tags":null,
+      "Address":"",
+      "Port":80,
+      "EnableTagOverride":false,
+      "CreateIndex":13,
+      "ModifyIndex":13
+    }
   },
   {
-    "Node":"consul-client-nyc3-2",
-    "Address":"127.0.0.3",
-    "ServiceID":"web",
-    "ServiceName":"web",
-    "ServiceTags":[],
-    "ServiceAddress":"",
-    "ServicePort":80,
-    "ServiceEnableTagOverride":false,
-    "CreateIndex":18,
-    "ModifyIndex":18
+    "Node":{
+      "Node":"consul-client-nyc3-1",
+      "Address":"127.0.0.3",
+      "TaggedAddresses":{
+        "wan":"127.0.0.3"
+      },
+      "CreateIndex":7,
+      "ModifyIndex":375588
+    },
+    "Service":{
+      "ID":"web",
+      "Service":"web",
+      "Tags":null,
+      "Address":"",
+      "Port":80,
+      "EnableTagOverride":false,
+      "CreateIndex":13,
+      "ModifyIndex":13
+    }
   }
 ]`
 
@@ -236,7 +272,7 @@ func TestConsulNextServerFallback(t *testing.T) {
 	gock.InterceptClient(config.Client.HttpClient)
 
 	gock.New("http://demo.consul.io").
-		Get("/v1/catalog/service/web").
+		Get("/v1/health/service/web").
 		Reply(200).
 		Type("json").
 		BodyString(consulMultipleServers)
