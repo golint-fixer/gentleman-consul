@@ -13,16 +13,25 @@ import (
 const consulValidResponse = `
 [
   {
-    "Node":"consul-client-nyc3-1",
-    "Address":"127.0.0.1",
-    "ServiceID":"web",
-    "ServiceName":"web",
-    "ServiceTags":[],
-    "ServiceAddress":"",
-    "ServicePort":80,
-    "ServiceEnableTagOverride":false,
-    "CreateIndex":17,
-    "ModifyIndex":17
+    "Node":{
+      "Node":"consul-client-nyc3-1",
+      "Address":"127.0.0.1",
+      "TaggedAddresses":{
+        "wan":"127.0.0.1"
+      },
+      "CreateIndex":7,
+      "ModifyIndex":375588
+    },
+    "Service":{
+      "ID":"web",
+      "Service":"web",
+      "Tags":null,
+      "Address":"",
+      "Port":80,
+      "EnableTagOverride":false,
+      "CreateIndex":13,
+      "ModifyIndex":13
+    }
   }
 ]`
 
@@ -31,7 +40,7 @@ func main() {
 
 	// Mock consul server
 	gock.New("http://demo.consul.io").
-		Get("/v1/catalog/service/web").
+		Get("/v1/health/service/web").
 		Reply(200).
 		Type("json").
 		BodyString(consulValidResponse)
