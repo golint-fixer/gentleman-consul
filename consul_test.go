@@ -1,13 +1,14 @@
 package consul
 
 import (
-	"github.com/nbio/st"
-	"gopkg.in/eapache/go-resiliency.v1/retrier"
-	"gopkg.in/h2non/gentleman-mock.v0"
-	"gopkg.in/h2non/gentleman.v0"
-	"gopkg.in/h2non/gock.v0"
 	"testing"
 	"time"
+
+	"github.com/nbio/st"
+	"gopkg.in/eapache/go-resiliency.v1/retrier"
+	"gopkg.in/h2non/gentleman-mock.v1"
+	"gopkg.in/h2non/gentleman.v1"
+	"gopkg.in/h2non/gock.v1"
 )
 
 const consulValidResponse = `

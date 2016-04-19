@@ -1,8 +1,9 @@
 package consul
 
 import (
-	"github.com/nbio/st"
 	"testing"
+
+	"github.com/nbio/st"
 )
 
 func TestNewConfig(t *testing.T) {

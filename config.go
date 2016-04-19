@@ -1,9 +1,10 @@
 package consul
 
 import (
-	"github.com/hashicorp/consul/api"
-	"gopkg.in/h2non/gentleman-retry.v0"
 	"time"
+
+	"github.com/hashicorp/consul/api"
+	"gopkg.in/h2non/gentleman-retry.v1"
 )
 
 // Scheme represents the URI scheme used by default.

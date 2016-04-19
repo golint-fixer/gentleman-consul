@@ -1,8 +1,8 @@
 package consul
 
 import (
-	"gopkg.in/h2non/gentleman-retry.v0"
-	"gopkg.in/h2non/gentleman.v0/context"
+	"gopkg.in/h2non/gentleman-retry.v1"
+	"gopkg.in/h2non/gentleman.v1/context"
 )
 
 // DefaultRetrier stores the default retry strategy used by the plugin.

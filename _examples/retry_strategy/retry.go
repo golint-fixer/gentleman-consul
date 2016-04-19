@@ -3,10 +3,10 @@ package main
 import (
 	"fmt"
 	"gopkg.in/eapache/go-resiliency.v1/retrier"
-	"gopkg.in/h2non/gentleman-consul.v0"
-	"gopkg.in/h2non/gentleman-mock.v0"
-	"gopkg.in/h2non/gentleman.v0"
-	"gopkg.in/h2non/gock.v0"
+	"gopkg.in/h2non/gentleman-consul.v1"
+	"gopkg.in/h2non/gentleman-mock.v1"
+	"gopkg.in/h2non/gentleman.v1"
+	"gopkg.in/h2non/gock.v1"
 	"time"
 )
 

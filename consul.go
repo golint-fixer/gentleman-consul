@@ -3,12 +3,13 @@ package consul
 import (
 	"errors"
 	"fmt"
-	"github.com/hashicorp/consul/api"
-	"gopkg.in/h2non/gentleman-retry.v0"
-	"gopkg.in/h2non/gentleman.v0/context"
-	"gopkg.in/h2non/gentleman.v0/plugin"
 	"sync"
 	"time"
+
+	"github.com/hashicorp/consul/api"
+	"gopkg.in/h2non/gentleman-retry.v1"
+	"gopkg.in/h2non/gentleman.v1/context"
+	"gopkg.in/h2non/gentleman.v1/plugin"
 )
 
 // Consul represents the Consul plugin adapter for gentleman,
