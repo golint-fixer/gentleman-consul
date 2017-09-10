@@ -1,3 +1,9 @@
+
+## v2.0.0 / 2017-09-10
+
+  * fix(docs): update example import order
+  * feat(upgrade): use gentleman v2
+
 ## 0.1.2 / 03-04-2016
 
 - feat(consul): use Consul health services instead of from catalog.
