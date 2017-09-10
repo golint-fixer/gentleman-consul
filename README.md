@@ -74,10 +74,11 @@ package main
 
 import (
   "fmt"
-  "gopkg.in/eapache/go-resiliency.v1/retrier"
-  "gopkg.in/h2non/gentleman-consul.v1"
-  "gopkg.in/h2non/gentleman.v1"
-  "time"
+	"time"
+
+	"gopkg.in/h2non/gentleman.v1"
+	"gopkg.in/h2non/gentleman-consul.v1"
+	"gopkg.in/eapache/go-resiliency.v1/retrier"
 )
 
 func main() {
