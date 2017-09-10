@@ -4,7 +4,7 @@ import (
 	"time"
 
 	"github.com/hashicorp/consul/api"
-	"gopkg.in/h2non/gentleman-retry.v1"
+	"gopkg.in/h2non/gentleman-retry.v2"
 )
 
 // Scheme represents the URI scheme used by default.

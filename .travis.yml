@@ -1,17 +1,20 @@
 language: go
 
 go:
-  - 1.6
   - 1.5
+  - 1.6
+  - 1.7
+  - 1.8
+  - 1.9
   - tip
 
 before_install:
   - go get github.com/nbio/st
-  - go get -u gopkg.in/h2non/gentleman.v1
+  - go get -u gopkg.in/h2non/gentleman.v2
   - go get -u gopkg.in/h2non/gock.v1
-  - go get -u gopkg.in/h2non/gentleman-mock.v1
+  - go get -u gopkg.in/h2non/gentleman-mock.v2
   - go get -u gopkg.in/eapache/go-resiliency.v1/retrier
-  - go get -u gopkg.in/h2non/gentleman-retry.v1
+  - go get -u gopkg.in/h2non/gentleman-retry.v2
   - go get -u github.com/hashicorp/consul/api
   - go get -u -v github.com/axw/gocov/gocov
   - go get -u -v github.com/mattn/goveralls

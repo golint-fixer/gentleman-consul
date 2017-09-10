@@ -6,8 +6,8 @@ import (
 
 	"github.com/nbio/st"
 	"gopkg.in/eapache/go-resiliency.v1/retrier"
-	"gopkg.in/h2non/gentleman-mock.v1"
-	"gopkg.in/h2non/gentleman.v1"
+	"gopkg.in/h2non/gentleman-mock.v2"
+	"gopkg.in/h2non/gentleman.v2"
 	"gopkg.in/h2non/gock.v1"
 )
 

@@ -1,6 +1,6 @@
 # [gentleman](https://github.com/h2non/gentleman)-consul [![Build Status](https://travis-ci.org/h2non/gentleman.png)](https://travis-ci.org/h2non/gentleman-consul) [![GoDoc](https://godoc.org/github.com/h2non/gentleman-consul?status.svg)](https://godoc.org/github.com/h2non/gentleman-consul) [![Coverage Status](https://coveralls.io/repos/github/h2non/gentleman-consul/badge.svg?branch=master)](https://coveralls.io/github/h2non/gentleman-consul?branch=master) [![Go Report Card](https://goreportcard.com/badge/github.com/h2non/gentleman-consul)](https://goreportcard.com/report/github.com/h2non/gentleman-consul)
 
-[gentleman](https://github.com/h2non/gentleman)'s plugin for easy service discovery using [Consul](https://www.consul.io).
+[gentleman](https://github.com/h2non/gentleman)'s v2 plugin for easy service discovery using [Consul](https://www.consul.io).
 
 Provides transparent retry/backoff support for resilient and [reactive](http://www.reactivemanifesto.org) HTTP client capabilities.  
 It also allows you to use custom [retry strategies](#custom-retry-strategy), such as [constant](https://godoc.org/github.com/eapache/go-resiliency/retrier#ConstantBackoff) or [exponential](https://godoc.org/github.com/eapache/go-resiliency/retrier#ExponentialBackoff) retries.
@@ -8,8 +8,13 @@ It also allows you to use custom [retry strategies](#custom-retry-strategy), suc
 ## Installation
 
 ```bash
-go get -u gopkg.in/h2non/gentleman-consul.v1
+go get -u gopkg.in/h2non/gentleman-consul.v2
 ```
+
+## Versions
+
+- **[v1](https://github.com/h2non/gentleman-consul/tree/v1)** - First version, uses `gentleman@v1`.
+- **[v2](https://github.com/h2non/gentleman-consul/tree/master)** - Latest version, uses `gentleman@v2`.
 
 ## API
 
@@ -26,8 +31,9 @@ package main
 
 import (
   "fmt"
-  "gopkg.in/h2non/gentleman-consul.v1"
-  "gopkg.in/h2non/gentleman.v1"
+
+  "gopkg.in/h2non/gentleman.v2"
+	"gopkg.in/h2non/gentleman-consul.v2"
 )
 
 func main() {
@@ -111,6 +117,6 @@ func main() {
 }
 ```
 
-## License 
+## License
 
 MIT - Tomas Aparicio
