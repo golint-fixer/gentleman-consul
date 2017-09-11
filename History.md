@@ -1,4 +1,10 @@
 
+## v2.0.1 / 2017-09-11
+
+  * fix(import): use gentleman-retry.v2
+  * fix(style): formatting issues
+  * fix(travis): use compatible Go versions
+
 ## v2.0.0 / 2017-09-10
 
   * fix(docs): update example import order
