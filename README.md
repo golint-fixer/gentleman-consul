@@ -76,7 +76,7 @@ import (
   "fmt"
 	"time"
 
-	"gopkg.in/h2non/gentleman.v1"
+	"gopkg.in/h2non/gentleman.v2"
 	"gopkg.in/h2non/gentleman-consul.v1"
 	"gopkg.in/eapache/go-resiliency.v1/retrier"
 )

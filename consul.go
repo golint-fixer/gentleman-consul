@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/hashicorp/consul/api"
-	"gopkg.in/h2non/gentleman-retry.v1"
+	"gopkg.in/h2non/gentleman-retry.v2"
 	"gopkg.in/h2non/gentleman.v2/context"
 	"gopkg.in/h2non/gentleman.v2/plugin"
 )
