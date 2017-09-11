@@ -4,12 +4,11 @@ import (
 	"fmt"
 	"time"
 
-	"gopkg.in/h2non/gock.v1"
-	"gopkg.in/h2non/gentleman.v2"
-	"gopkg.in/h2non/gentleman-mock.v2"
-	"gopkg.in/h2non/gentleman-consul.v2"
 	"gopkg.in/eapache/go-resiliency.v1/retrier"
-
+	"gopkg.in/h2non/gentleman-consul.v2"
+	"gopkg.in/h2non/gentleman-mock.v2"
+	"gopkg.in/h2non/gentleman.v2"
+	"gopkg.in/h2non/gock.v1"
 )
 
 const consulValidResponse = `
